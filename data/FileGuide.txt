@@ -1,0 +1,21 @@
+CleaningScript.R- R studio script that takes in all raw data from RealDataRaw folder, and turns it into all other csv files in this folder.
+
+MasterRaw.csv - All raw data from RealDataRaw folder row binded together to one csv with many rows. Original individual csv files came from PsychoPy. Important columns: 
+-Col A-sequence-first column, length 80 vector, 1 means that their choice needs to be flipped since I randomized the side the sandwiches appeared on on these trials. So if choice was "a" on a trial where sequence is 1, this means they actually picked sandwich 2 (a is sandwich 1, l is sandwich 2). CleaningScript.R handles flipping these decisions to correspond with the actual sandwich picked.
+-Cols B-M- Column D is only useful column here, it indicates whether subject said they were vegetarian or not, other columns are artificats of PsychoPy recording
+-Col N- Participant id
+-Col O-S self explanatory, unused in analysis, variables recorded by PsychoPy
+-Col T- Main choice response key. "a" indicated presented sandwich 1 (see note on sequence column above), "l" was for sandwich 2, "space" was to display the next ingredient for both sandwiches
+-Col U-AA: Other information about main trials. Important one is trial order for that subject is in Trials.thisIndex, and it starts at 0 for the first trial
+-Col AB-AT: Records the ingrendients on the sandwiches presented on that trail (and information about ingredients per sandwich and on that trial). All trials for workable data in ModelDF have been reordered already.
+-Col AU-AZ: The Iter loop handled the sequential presentation of ingredients, no actual data is recorded in these columns
+-Col BA-BO: Columns recording data for the slider ingredient rating loop. Rating is recorded in BC, Order is recorded in BJ again with 0 being the first trial, BD is response time for selecting option on slider, BF is RT for clicking to submit, BM is the ingredient they were rating on that trial.
+
+
+MasterClean.csv - Same format as MasterRaw.csv, just with many redundant rows removed, and unnecessary columns from PsychoPy removed. See CleaningScript.R for details
+
+ModelDF.csv- This converts the long data to a wide format. Each subject has a row, and each row variables are whether they are vegetarian (y=yes, n=no). Choice Matrix of sandwiches which is 0 for sandwich 1, 1 for sandwich 2. Stopping point on each trial, indicating how many ingredients were searched on each trial. The ratings for the 10 most common ingredients on a slider rating, and finally the sequence which indicated whether that trial had the sandwiches flipped. All data in this data frame has already been accounted for these flipped sandwiches, and sequences is just recorded to look for left/right responding bias.
+
+DecisionSandwiches.csv- In the ordered trials (all subjects had randomized order, but their decision have been standardized to this normal order), what ingredients were on each sandwich. Each ingredient is in a column (rows are trials) with s11 indicating sandwich 1 ingredient 1, s12 indicating sandwich 1 ingredient 2, s23 indicating sandwich 2 ingredient 3, etc. Also in this data frame are columns that tell the max ingredients in the row, the number of ingredients on each sandwich, and whether that sandwich was part of the regular or vegetarian stimuli set (r=regular, v=vegetarian)
+
+SliderIngs.csv- Similar to Decision sandwiches in that it records stimuli used on the 10 ingredient rating scale at the end. First row is the regular ingredients, in trial order (Tomatoes first, Spinach last), second row is vegetarian ingredients in trial order (Tomatoes first, Mayo last).
